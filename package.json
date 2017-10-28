@@ -1,0 +1,30 @@
+{
+  "name": "tracker-firebase",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build:f": "tsc --removeComments -p functions",
+    "deploy:f": "npm run build:f && firebase deploy --only functions",
+    "deploy:h": "firebase deploy --only hosting",
+    "deploy:all": "npm run build:f && firebase deploy",
+    "log:f": "firebase functions:log"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ovrmrw/tracker-firebase.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ovrmrw/tracker-firebase/issues"
+  },
+  "homepage": "https://github.com/ovrmrw/tracker-firebase#readme",
+  "devDependencies": {
+    "firebase-tools": "^3.13.1",
+    "ts-node": "^3.3.0",
+    "tslint": "^5.8.0",
+    "typescript": "^2.5.3"
+  }
+}
