@@ -5,6 +5,4 @@ const config = functions.config()
 
 admin.initializeApp(config.firebase)
 
-const projectId = config.projectId
-
-export { functions, admin, projectId }
+export { functions, admin }

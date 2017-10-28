@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build:b": "webpack -p --config beacon/webpack.config.js",
     "build:f": "tsc --removeComments -p functions",
+    "build:all": "npm run build:b && npm run build:f",
     "deploy:f": "npm run build:f && firebase deploy --only functions",
-    "deploy:h": "firebase deploy --only hosting",
-    "deploy:all": "npm run build:f && firebase deploy",
+    "deploy:h": "npm run build:b && firebase deploy --only hosting",
+    "deploy:all": "npm run build:all && firebase deploy",
     "log:f": "firebase functions:log"
   },
   "repository": {
@@ -22,9 +24,11 @@
   },
   "homepage": "https://github.com/ovrmrw/tracker-firebase#readme",
   "devDependencies": {
+    "awesome-typescript-loader": "^3.2.3",
     "firebase-tools": "^3.13.1",
     "ts-node": "^3.3.0",
     "tslint": "^5.8.0",
-    "typescript": "^2.5.3"
+    "typescript": "^2.5.3",
+    "webpack": "^3.8.1"
   }
 }

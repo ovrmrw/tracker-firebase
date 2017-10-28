@@ -1,9 +1,10 @@
-import { functions, admin, projectId } from './admin'
+import { functions, admin } from './admin'
 import * as express from 'express'
 import * as cookieParser from 'cookie-parser'
 import { CookieOptions } from 'express'
 import * as cors from 'cors'
 
+const projectId: string = functions.config().firebase.projectId
 const DOMAIN = `us-central1-${projectId}.cloudfunctions.net`
 
 const app = express()
@@ -12,18 +13,18 @@ app.use(cors({ origin: true }))
 app.use(cookieParser())
 
 app.get('/hello/:name', (req, res) => {
-  const name = req.params.name || 'who?'
+  const name: string = req.params.name || 'who?'
   res.send(`Hello ${name}`)
 })
 
 app.get('/log-config', (req, res) => {
-  const config = functions.config()
+  const config: any = functions.config()
   console.log(config)
   res.send('functions.config() is logged.')
 })
 
 app.get('/js', (req, res) => {
-  const js = '(function(){ alert(1); })();'
+  const js: string = '(function(){ alert(1); })();'
   res.contentType('text/javascript').send(js)
   /**
    * クライアントコードは下記のようにすると受け取ったJSを動的に実行できる。
@@ -39,7 +40,11 @@ app.get('/js', (req, res) => {
 })
 
 app.get('/tracker', (req, res) => {
-  const uid = req.cookies['_uid'] || Math.random().toString(36).slice(-10)
+  const uid: string = req.cookies['_uid'] || Math.random().toString(36).slice(-10)
+  const json = {
+    uid,
+    exist: !!req.cookies['_uid'],
+  }
 
   const options: CookieOptions = {
     maxAge: 1000 * 60 * 60 * 24 * 365,
@@ -49,7 +54,9 @@ app.get('/tracker', (req, res) => {
     domain: DOMAIN,
   }
 
-  res.cookie('_uid', uid, options).send(`tracking ${uid}`)
+  res.cookie('_uid', uid, options)
+    .set('Access-Control-Allow-Credentials', 'true')
+    .send(json)
 })
 
 export const api = functions.https.onRequest(app);
