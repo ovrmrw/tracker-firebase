@@ -1,3 +1,6 @@
+import { _location } from './config'
+import { namespace, getRandomString } from './utils'
+
 export class CookieController {
 
   getValue(key: string): string {
@@ -11,18 +14,31 @@ export class CookieController {
     return value
   }
 
-  setValue(key: string, value: string, domain: string): void {
-    const segments: string[] = domain.replace(/\//g, '')
+  setValue(key: string, value: string, maxAge: number): void {
+    const segments: string[] = _location.hostname.replace(/\//g, '')
       .split('.').reverse()
-    const maxAge: number = 60 * 60 * 24 * 365 * 2
     let topLevelDomain: string = ''
     for (const segment of segments) {
       topLevelDomain = '.' + segment + topLevelDomain
       document.cookie = `${key}=${value}; path=/; domain=${topLevelDomain}; max-age=${maxAge}`
-      if (this.getValue(key) === value) {
-        break;
-      }
+      this.setTopLevelDomain(key, value, topLevelDomain)
     }
+  }
+
+  private setTopLevelDomain(key, value, domain: string): void {
+    if (namespace().topLevelDomain) {
+      return
+    }
+    if (this.getValue(key) === value && domain.split('.').filter(s => s).length > 1) {
+      namespace().topLevelDomain = domain
+    }
+  }
+
+  setDummyValueForDetermineTopLevelDomain(): void {
+    const key: string = '__' + getRandomString(4)
+    const value: string = getRandomString(6)
+    const maxAge: number = 1
+    this.setValue(key, value, maxAge)
   }
 
 }

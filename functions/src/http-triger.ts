@@ -3,12 +3,10 @@ import * as express from 'express'
 import * as cookieParser from 'cookie-parser'
 import { CookieOptions } from 'express'
 import * as cors from 'cors'
-import { Utils } from './utils'
+import { getRandomString } from './utils'
 
 const projectId: string = functions.config().firebase.projectId
 const COOKIE_DOMAIN = `us-central1-${projectId}.cloudfunctions.net`
-
-const utils = new Utils()
 
 const app = express()
 
@@ -43,7 +41,7 @@ app.get('/js', (req, res) => {
 })
 
 app.get('/tracker', (req, res) => {
-  const uid: string = req.cookies['_uid'] || utils.getRandomString(10)
+  const uid: string = req.cookies['_uid'] || getRandomString(10)
   const json = {
     uid,
     generated: !req.cookies['_uid'],

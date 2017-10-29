@@ -11,3 +11,5 @@ export const TRACKER_DOMAIN = `us-central1-${firebaseConfig.projectId}.cloudfunc
 export const TRACKER_ENDPOINT = `https://${TRACKER_DOMAIN}/api/tracker`
 export const NAMESPACE = '_tracker'
 export const UID_1ST_KEY = '_tracker_uid'
+export const _window: any = window
+export const _location = window.location
