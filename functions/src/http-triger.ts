@@ -13,31 +13,10 @@ const app = express()
 app.use(cors({ origin: true }))
 app.use(cookieParser())
 
-app.get('/hello/:name', (req, res) => {
-  const name: string = req.params.name || 'who?'
-  res.send(`Hello ${name}`)
-})
-
 app.get('/log-config', (req, res) => {
   const config: any = functions.config()
   console.log(config)
   res.send('functions.config() is logged.')
-})
-
-app.get('/js', (req, res) => {
-  const js: string = '(function(){ alert(1); })();'
-  res.contentType('text/javascript').send(js)
-  /**
-   * クライアントコードは下記のようにすると受け取ったJSを動的に実行できる。
-   * fetch('https://us-central1-{projectId}.cloudfunctions.net/api/js')
-   *   .then(res => res.text())
-   *   .then(js => {
-   *     const script = document.createElement('script')
-   *     script.innerHTML = js
-   *     script.async = true
-   *     document.body.appendChild(script)
-   *   })
-   */
 })
 
 app.get('/tracker', (req, res) => {

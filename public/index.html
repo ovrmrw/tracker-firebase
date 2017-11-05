@@ -62,33 +62,6 @@
       });
     </script>
 
-    <script async src="static/js/beacon.js"></script>
-
-    <!-- 以下のscriptでiframe経由で3rd party Cookieの読み書きをテストしたが、Safariだけはやはりダメだった。 -->
-    <script async>
-      (function() {
-        var iframe = document.createElement('iframe');
-        iframe.id = 'iframe-tracker';
-        iframe.src = 'https://us-central1-tracker-firebase-ffcd5.cloudfunctions.net/ssr/tracker';
-        iframe.onload = _sendPostMessage;
-        iframe.width = 0;
-        iframe.height = 0;
-        iframe.style.display = 'none';
-        document.body.appendChild(iframe);
-      })();
-      
-      function _sendPostMessage() {
-        console.log('sendPostMessage');
-        var w = document.getElementById('iframe-tracker').contentWindow;
-        w.postMessage('hoge', 'https://us-central1-tracker-firebase-ffcd5.cloudfunctions.net');
-      }
-      
-      function _receiveMessage(event) {
-        console.log(event);
-        if (event.origin !== "https://us-central1-tracker-firebase-ffcd5.cloudfunctions.net")
-          return;
-      }
-      window.addEventListener("message", _receiveMessage, false);
-    </script>
+    <script async src="static/js/beacon.js"></script>  
   </body>
 </html>

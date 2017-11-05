@@ -30,7 +30,7 @@ export class CookieController {
       return
     }
     if (this.getValue(key) === value && domain.split('.').filter(s => s).length > 1) {
-      namespace().topLevelDomain = domain
+      namespace().topLevelDomain = domain.replace(/^\./, '')
     }
   }
 
